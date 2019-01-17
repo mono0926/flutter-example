@@ -22,21 +22,15 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
     _list = ListModel<int>(
       listKey: _listKey,
       initialItems: initialItems,
-      removedItemBuilder: _buildRemovedItem,
+      removedItemBuilder: (item, context, animation) {
+        return CardItem(
+          animation: animation,
+          item: item,
+          selected: false,
+        );
+      },
     );
     _nextItem = initialItems.length;
-  }
-
-  Widget _buildRemovedItem(
-    int item,
-    BuildContext context,
-    Animation<double> animation,
-  ) {
-    return CardItem(
-      animation: animation,
-      item: item,
-      selected: false,
-    );
   }
 
   void _insert() {
