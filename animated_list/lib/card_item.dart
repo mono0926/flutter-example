@@ -4,15 +4,15 @@ class CardItem extends StatelessWidget {
   const CardItem({
     Key key,
     @required this.animation,
-    @required this.onTap,
     @required this.item,
+    this.onTap,
     this.selected = false,
   })  : assert(item >= 0),
         super(key: key);
 
   final Animation<double> animation;
-  final VoidCallback onTap;
   final int item;
+  final VoidCallback onTap;
   final bool selected;
 
   @override
@@ -32,7 +32,7 @@ class CardItem extends StatelessWidget {
         axis: Axis.vertical,
         sizeFactor: animation,
         child: GestureDetector(
-          behavior: HitTestBehavior.opaque, // TODO: what?
+          behavior: HitTestBehavior.opaque,
           onTap: onTap,
           child: SizedBox(
             height: 128,

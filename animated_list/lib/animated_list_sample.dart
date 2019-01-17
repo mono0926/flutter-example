@@ -13,34 +13,18 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
   ListModel<int> _list;
   int _selectedItem;
   int _nextItem;
+  int get _selectedIdex => _list.indexOf(_selectedItem);
 
   @override
   void initState() {
     super.initState();
+    final initialItems = [0, 1, 2];
     _list = ListModel<int>(
       listKey: _listKey,
-      initialItems: [0, 1, 2],
+      initialItems: initialItems,
       removedItemBuilder: _buildRemovedItem,
     );
-    _nextItem = 3; // TODO:
-  }
-
-  Widget _buildItem(
-    BuildContext context,
-    int index,
-    Animation<double> animation,
-  ) {
-    return CardItem(
-      animation: animation,
-      item: _list[index],
-      selected: _selectedItem == _list[index],
-      onTap: () {
-        setState(() {
-          _selectedItem =
-              _selectedItem == _list[index] ? null : _list[index]; // TODO:
-        });
-      },
-    );
+    _nextItem = initialItems.length;
   }
 
   Widget _buildRemovedItem(
@@ -56,14 +40,16 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
   }
 
   void _insert() {
-    final index =
-        _selectedItem == null ? _list.length : _list.indexOf(_selectedItem);
+    final index = _selectedItem == null ? _list.length : _selectedIdex;
     _list.insert(index, _nextItem++);
   }
 
   void _remove() {
-    if (_selectedItem == null) return;
-    _list.removeAt(_list.indexOf(_selectedItem));
+    if (_selectedItem == null) {
+      return;
+    }
+
+    _list.removeAt(_selectedIdex);
     setState(() {
       _selectedItem = null;
     });
@@ -93,7 +79,19 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
           child: AnimatedList(
             key: _listKey,
             initialItemCount: _list.length,
-            itemBuilder: _buildItem,
+            itemBuilder: (context, index, animation) {
+              final item = _list[index];
+              return CardItem(
+                animation: animation,
+                item: _list[index],
+                selected: _selectedItem == item,
+                onTap: () {
+                  setState(() {
+                    _selectedItem = _selectedItem == item ? null : item;
+                  });
+                },
+              );
+            },
           ),
         ),
       ),
