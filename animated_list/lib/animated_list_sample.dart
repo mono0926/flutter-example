@@ -10,6 +10,7 @@ class AnimatedListSample extends StatefulWidget {
 
 class _AnimatedListSampleState extends State<AnimatedListSample> {
   final _listKey = GlobalKey<AnimatedListState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   ListModel<int> _list;
   int _selectedItem;
   int _nextItem;
@@ -40,6 +41,8 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
 
   void _remove() {
     if (_selectedItem == null) {
+      _scaffoldKey.currentState.showSnackBar(
+          const SnackBar(content: Text('Select item to remove.')));
       return;
     }
 
@@ -53,6 +56,7 @@ class _AnimatedListSampleState extends State<AnimatedListSample> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: const Text('AnimatedList'),
           actions: [
